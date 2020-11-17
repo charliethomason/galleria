@@ -40,13 +40,12 @@ export default class App extends Component {
         <div key={`row-${r}`} className="galleria-row">
           {row.map((img, i) => {
             const imgStyle = {
-              display: "inline-block",
               height: rowHeight,
               width: img.width / (imgHeight / rowHeight)
             };
             return (
               <a href="#" key={`img-${i}`} className="galleria-img" style={imgStyle}>
-                <img src={`./img/photos/${img.file}.jpg`} />
+                <img src={require(`./img/photos/${img.file}.jpg`).default} alt={img.file} />
               </a>
             );
           })}
