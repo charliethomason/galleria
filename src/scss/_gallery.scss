@@ -1,0 +1,15 @@
+.wrapper {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.galleria-row {
+  display: flex;
+}
+
+.galleria-img {
+  display: block;
+  img {
+    max-width: 100%;
+  }
+}
