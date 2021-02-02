@@ -45,6 +45,9 @@ export default function Galleria() {
         imgLarge.src = img.dataset.large;
         imgLarge.alt = small.alt;
         imgLarge.onload = () => {
+          // give the link a class of "ready"
+          // to indicate lightbox clicks can now happen
+          img.classList.add("ready");
           imgLarge.classList.add("loaded");
         };
         img.appendChild(imgLarge);
@@ -91,7 +94,10 @@ export default function Galleria() {
   function onClick(e, img) {
     e.preventDefault();
     e.stopPropagation();
-    setLightId(img.file);
+    // don't let lightbox happen before images have loaded
+    if (e.target.classList.contains("ready")) {
+      setLightId(img.file);
+    }
   }
 
   function closeLightbox(e) {

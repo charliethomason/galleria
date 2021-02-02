@@ -5,7 +5,7 @@ export default class App extends Component {
   render() {
     return (
       <main className="wrapper">
-        <h1>Photo Gallery</h1>
+        <h1>Galleria</h1>
         <Galleria />
       </main>
     );
