@@ -29,9 +29,9 @@ export default function Galleria() {
   });
 
   function loadImages() {
-    const allRows = document.querySelectorAll(".galleria-row");
+    const allRows = document.querySelectorAll(".galleria__row");
     allRows.forEach(row => {
-      const rowImgs = row.querySelectorAll(".galleria-img");
+      const rowImgs = row.querySelectorAll(".galleria__img");
       rowImgs.forEach(img => {
         const small = img.children[0];
 
@@ -61,9 +61,12 @@ export default function Galleria() {
   function getStyle(row, img) {
     const onlyOneInRow = row.length === 1;
     const totalWidth = getTotalWidth(row);
+    // actual displayed row width, divided by the aspect ratio of the row.
+    // e.g.: 1000 / (2400 / 600 = 4) = 250
     const rowHeight = onlyOneInRow && img.width <= actualRowWidth
       ? imgHeight
       : actualRowWidth / (totalWidth / imgHeight);
+    // reduce the image width by the same amount the image height was reduced
     const imgWidth = onlyOneInRow && img.width <= actualRowWidth
       ? img.width
       : img.width / (imgHeight / rowHeight)
@@ -99,20 +102,29 @@ export default function Galleria() {
 
   function renderGalleria() {
     const photosInRows = photos.reduce((rows, img) => { 
+      // if we have no rows created yet, create a row with this 1st image
       if (!rows.length) {
         rows.push([img]);
         return rows;
       } else {
+        // loop through all the rows we have created so far
         for (const [i, row] of rows.entries()) {
           const currWidths = getTotalWidth(row);
           const isLastRow = i === rows.length-1;
+          // "If the currrent total width of the images in this row is
+          // greater than/equal to the max width allowed for a single row."
+          // If the image heights are 600px then the max possible row width is 2400px.
+          // 2400 / 600 = 4, thus a 4:1 min aspect ratio for each row.
           if (currWidths >= maxRowWidth) {
+            // if this is the last row and it's already full, create a new one with this image.
+            // otherwise continue on to check the next row.
             if (isLastRow) {
               rows.push([img]);
               break;
             } else {
               continue;
             }
+          // if there is still space in this row, add this image.
           } else {
             row.push(img);
             break;
@@ -124,13 +136,12 @@ export default function Galleria() {
 
     const galleria = photosInRows.map((row, r) => {
       return (
-        <div key={`row-${r}`} className="galleria-row">
+        <div key={`row-${r}`} className="galleria__row">
           {row.map(img => (
             <a
               href="#"
-              key={`galleria-img--${img.file}`}
-              id={`galleria-img--${img.file}`}
-              className="galleria-img"
+              key={`galleria__img--${img.file}`}
+              className="galleria__img"
               style={getStyle(row, img)}
               data-large={require(`./img/photos/${img.file}.jpg`).default}
               onClick={e => onClick(e, img)}
@@ -138,7 +149,7 @@ export default function Galleria() {
               <img
                 src={require(`./img/photos/thumbs/${img.file}.jpg`).default}
                 alt={img.file}
-                className="galleria-small"
+                className="galleria__small"
               />
             </a>
           ))}

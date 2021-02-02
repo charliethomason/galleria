@@ -19,12 +19,12 @@ $galleria-lg: 1000px;
   max-width: $galleria-lg;
   margin: 0 auto;
 
-  &-row {
+  &__row {
     display: flex;
     flex-wrap: wrap;
   }
 
-  &-img {
+  &__img {
     display: block;
     position: relative;
     overflow: hidden;
@@ -42,7 +42,7 @@ $galleria-lg: 1000px;
     }
   }
 
-  &-small {
+  &__small {
     filter: blur(10px);
     transform: scale(1);
   }
