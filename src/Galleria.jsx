@@ -3,7 +3,7 @@ import photos from "./photos";
 
 export default function Galleria() {
   const [actualRowWidth, setActualRowWidth] = useState(0);
-  const [lightId, setLightId] = useState(null);
+  const [lightImg, setLightImg] = useState(null);
 
   const imgHeight = 600;
   const maxRowWidth = 2400;
@@ -96,14 +96,14 @@ export default function Galleria() {
     e.stopPropagation();
     // don't let lightbox happen before images have loaded
     if (e.target.classList.contains("ready")) {
-      setLightId(img.file);
+      setLightImg(img);
     }
   }
 
   function closeLightbox(e) {
     e.preventDefault();
     e.stopPropagation();
-    setLightId(null);
+    setLightImg(null);
   }
 
   function renderGalleria() {
@@ -154,7 +154,7 @@ export default function Galleria() {
             >
               <img
                 src={require(`./img/photos/thumbs/${img.file}.jpg`).default}
-                alt={img.file}
+                alt={img.title || img.file}
                 className="galleria__small"
               />
             </a>
@@ -168,13 +168,16 @@ export default function Galleria() {
   return (
     <div className="galleria">
       {renderGalleria()}
-      {lightId && (
+      {lightImg && lightImg.file && (
         <div className="galleria__lightbox" onClick={closeLightbox}>
           <img
-            src={require(`./img/photos/${lightId}.jpg`).default}
-            alt={lightId}
+            src={require(`./img/photos/${lightImg.file}.jpg`).default}
+            alt={lightImg.file}
             className="galleria__lightbox__img"
           />
+          {lightImg.title && (
+            <div className="galleria__lightbox__title">{lightImg.title}</div>
+          )}
           <button
             type="button"
             className="galleria__lightbox__close"
