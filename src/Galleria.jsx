@@ -106,6 +106,21 @@ export default function Galleria() {
     setLightImg(null);
   }
 
+  function lightboxNav(e, change) {
+    e.stopPropagation();
+    const currentIndex = photos.findIndex(img => img.file === lightImg.file);
+    const lastImgIndex = photos.length - 1;
+    // if it's the first photo and they clicked previous
+    if (currentIndex === 0 && change === -1) {
+      setLightImg(photos[lastImgIndex]);
+    // if it's the last photo and they clicked next
+    } else if (currentIndex === lastImgIndex && change === 1) {
+      setLightImg(photos[0]);
+    } else {
+      setLightImg(photos[currentIndex + change]);
+    }
+  }
+
   function renderGalleria() {
     const photosInRows = photos.reduce((rows, img) => { 
       // if we have no rows created yet, create a row with this 1st image
@@ -166,10 +181,10 @@ export default function Galleria() {
   }
 
   return (
-    <div className="galleria">
+    <div className="galleria" onClick={closeLightbox}>
       {renderGalleria()}
       {lightImg && lightImg.file && (
-        <div className="galleria__lightbox" onClick={closeLightbox}>
+        <div className="galleria__lightbox" >
           <img
             src={require(`./img/photos/${lightImg.file}.jpg`).default}
             alt={lightImg.file}
@@ -178,6 +193,24 @@ export default function Galleria() {
           {lightImg.title && (
             <div className="galleria__lightbox__title">{lightImg.title}</div>
           )}
+          <button
+            type="button"
+            className="galleria__lightbox__nav"
+            title="Previous"
+            onClick={e => lightboxNav(e, -1)}
+          >
+            <span className="sr-only">Previous</span>
+            &larr;
+          </button>
+          <button
+            type="button"
+            className="galleria__lightbox__nav"
+            title="Next"
+            onClick={e => lightboxNav(e, 1)}
+          >
+            <span className="sr-only">Next</span>
+            &rarr;
+          </button>
           <button
             type="button"
             className="galleria__lightbox__close"

@@ -2,6 +2,34 @@ $galleria-sm: 320px;
 $galleria-med: 600px;
 $galleria-lg: 1000px;
 
+
+@mixin lightboxBtn {
+  background: #000;
+  border: 2px solid #fff;
+  border-radius: 20px;
+  color: #fff;
+  cursor: pointer;
+  font-weight: bold;
+  position: fixed;
+  z-index: 2;
+
+  &:hover {
+    background: #fff;
+    color: #000;
+  }
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  border: 0;
+}
+
 .wrapper {
   font-family: Arial, Helvetica, sans-serif;
 
@@ -76,6 +104,7 @@ $galleria-lg: 1000px;
       margin: 0 auto;
       max-height: 90%;
       max-width: 100%;
+      padding: 0 40px;
     }
 
     &__title {
@@ -85,16 +114,25 @@ $galleria-lg: 1000px;
     }
 
     &__close {
-      background: #000;
-      border: 2px solid #fff;
-      border-radius: 20px;
-      color: #fff;
-      font-weight: bold;
+      @include lightboxBtn;
       padding: 5px 10px;
-      position: fixed;
       right: 15px;
       top: 15px;
-      z-index: 2;
+    }
+
+    &__nav {
+      @include lightboxBtn;
+      line-height: 1;
+      padding: 5px 7px 7px;
+      transform: translateY(-50%);
+      top: 50%;
+
+      &[title="Previous"] {
+        left: 5px;
+      }
+      &[title="Next"] {
+        right: 5px;
+      }
     }
   }
 }
