@@ -8,6 +8,9 @@ export default function Galleria() {
   const imgHeight = 600;
   const maxRowWidth = 2400;
   const breakpoints = {
+    full: 2400,
+    jumbo: 2000,
+    xlarge: 1400,
     large: 1000,
     medium: 600,
     small: 320
@@ -64,12 +67,21 @@ export default function Galleria() {
   function getStyle(row, img) {
     const onlyOneInRow = row.length === 1;
     const totalWidth = getTotalWidth(row);
+    // if the image is in a row by itself,
+    // and its width is less than the actual displayed row width,
+    // then its height should just be its normal height,
+    // otherwise calculate the height as follows:
     // actual displayed row width, divided by the aspect ratio of the row.
     // e.g.: 1000 / (2400 / 600 = 4) = 250
     const rowHeight = onlyOneInRow && img.width <= actualRowWidth
       ? imgHeight
       : actualRowWidth / (totalWidth / imgHeight);
-    // reduce the image width by the same amount the image height was reduced
+    // if the image is in a row by itself,
+    // and its width is less than the actual displayed row width,
+    // then its width should also be its normal width,
+    // otherwise reduce the image width by the same amount the image height was reduced
+    // i.e.: actual width, divided by (actual height divided by displayed height).
+    // e.g.: 800 / (600 / 250 = 2.4) = 320
     const imgWidth = onlyOneInRow && img.width <= actualRowWidth
       ? img.width
       : img.width / (imgHeight / rowHeight)
@@ -80,14 +92,33 @@ export default function Galleria() {
   }
 
   function onResize() {
-    const { small, medium, large } = breakpoints;
+    const {
+      small,
+      medium,
+      large,
+      xlarge,
+      jumbo,
+      full
+    } = breakpoints;
     const windowWidth = window.innerWidth;
-    if (windowWidth > medium && windowWidth < large) {
-      setActualRowWidth(medium);
-    } else if (windowWidth >= small && windowWidth < medium) {
-      setActualRowWidth(small);
-    } else {
+    // if viewport is larger than max possible row size, use full row width
+    if (windowWidth > full) {
+      setActualRowWidth(full);
+    // if viewport is between jumbo and full, use jumbo row width
+    } else if (windowWidth > jumbo && windowWidth < full) {
+      setActualRowWidth(jumbo);
+    // if viewport is between xlarge and jumbo, use xlarge row width
+    } else if (windowWidth > xlarge && windowWidth < jumbo) {
+      setActualRowWidth(xlarge);
+    // if viewport is between large and xlarge, use large row width
+    } else if (windowWidth > large && windowWidth < xlarge) {
       setActualRowWidth(large);
+    // if viewport is between medium and large, use medium row width
+    } else if (windowWidth > medium && windowWidth < large) {
+      setActualRowWidth(medium);
+    // if viewport is less than medium, use small row width
+    } else {
+      setActualRowWidth(small);
     }
   }
 
@@ -134,11 +165,12 @@ export default function Galleria() {
           const isLastRow = i === rows.length-1;
           // "If the currrent total width of the images in this row is
           // greater than/equal to the max width allowed for a single row."
-          // If the image heights are 600px then the max possible row width is 2400px.
+          // All images are 600px in height and the max row width is 2400px.
           // 2400 / 600 = 4, thus a 4:1 min aspect ratio for each row.
           if (currWidths >= maxRowWidth) {
-            // if this is the last row and it's already full, create a new one with this image.
-            // otherwise continue on to check the next row.
+            // if this is the last row we've created so far and it's already full,
+            // then create a new row with this image,
+            // otherwise continue on to check if the next row has space.
             if (isLastRow) {
               rows.push([img]);
               break;

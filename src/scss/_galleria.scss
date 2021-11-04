@@ -1,6 +1,9 @@
 $galleria-sm: 320px;
 $galleria-med: 600px;
 $galleria-lg: 1000px;
+$galleria-xl: 1400px;
+$galleria-jumbo: 2000px;
+$galleria-full: 2400px;
 
 
 @mixin lightboxBtn {
@@ -42,7 +45,7 @@ $galleria-lg: 1000px;
 }
 
 .galleria {
-  max-width: $galleria-lg;
+  max-width: $galleria-full;
   margin: 0 auto;
 
   &__row {
@@ -134,6 +137,24 @@ $galleria-lg: 1000px;
         right: 5px;
       }
     }
+  }
+}
+
+@media screen and (max-width: $galleria-full) and (min-width: $galleria-jumbo) {
+  .galleria {
+    max-width: $galleria-jumbo;
+  }
+}
+
+@media screen and (max-width: $galleria-jumbo) and (min-width: $galleria-xl) {
+  .galleria {
+    max-width: $galleria-xl;
+  }
+}
+
+@media screen and (max-width: $galleria-xl) and (min-width: $galleria-lg) {
+  .galleria {
+    max-width: $galleria-lg;
   }
 }
 
