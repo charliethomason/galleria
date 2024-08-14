@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import photos from "./photos";
+import "./scss/main.scss";
 
-export default function Galleria() {
+export const Galleria = () => {
   const [actualRowWidth, setActualRowWidth] = useState(0);
   const [lightImg, setLightImg] = useState(null);
 
@@ -257,4 +258,4 @@ export default function Galleria() {
       )}
     </div>
   )
-}
+};
