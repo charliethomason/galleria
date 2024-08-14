@@ -1,0 +1,12 @@
+.DS_Store
+demo/
+node_modules/
+src/
+.babelrc
+.gitignore
+package-lock.json
+package.json
+README.md
+screenshot.jpg
+webpack.config.dev.js
+webpack.config.prod.js
