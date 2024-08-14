@@ -1,49 +1,49 @@
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const path = require("path");
 
 module.exports = {
-  mode: 'development',
-  entry: './src/index.js',
+  mode: "development",
+  entry: "./src/index.js",
   output: {
-    path: __dirname + '/dist',
-    filename: 'app.js',
-    publicPath: '/'
+    path: __dirname + "/dist",
+    filename: "app.js",
+    publicPath: "/"
   },
   module: {
     rules: [
       {
         test: /\.(js|jsx)$/,
-        loader: 'babel-loader',
-        exclude: /node_modules/
+        exclude: /node_modules/,
+        use: {
+          loader: "babel-loader"
+        }
       },
       {
         test: /\.scss$/,
-        loaders: ['style-loader', 'css-loader', {
-          loader: 'sass-loader',
-          options: {
-            sassOptions: {
-              outputStyle: 'compressed'
-            }
-          }
-        }]
+        use: [
+          "style-loader",
+          "css-loader",
+          "sass-loader"
+        ],
       },
       {
         test: /\.(jpg|png|gif)$/,
-        loader: 'file-loader',
-        options: {
-          name: '[path][name].[ext]',
-          context: 'src/',
-          useRelativePath: true
+        type: "asset/resource",
+        generator: {
+          filename: "img/photos/[name][ext][contenthash]"
         }
       }
     ]
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: 'index.html'
+      template: "index.html"
     })
   ],
   devServer: {
-    contentBase: __dirname + '/dist',
+    static: {
+      directory: __dirname + "/dist",
+    },
     port: 9100,
     open: true
   }

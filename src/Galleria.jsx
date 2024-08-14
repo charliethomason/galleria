@@ -190,22 +190,25 @@ export default function Galleria() {
     const galleria = photosInRows.map((row, r) => {
       return (
         <div key={`row-${r}`} className="galleria__row">
-          {row.map(img => (
-            <a
-              href="#"
-              key={`galleria__img--${img.file}`}
-              className="galleria__img"
-              style={getStyle(row, img)}
-              data-large={require(`./img/photos/${img.file}.jpg`).default}
-              onClick={e => onClick(e, img)}
-            >
-              <img
-                src={require(`./img/photos/thumbs/${img.file}.jpg`).default}
-                alt={img.title || img.file}
-                className="galleria__small"
-              />
-            </a>
-          ))}
+          {row.map(img => {
+            const file = require(`./img/photos/${img.file}.jpg`);
+            return (
+              <a
+                href="#"
+                key={`galleria__img--${img.file}`}
+                className="galleria__img"
+                style={getStyle(row, img)}
+                data-large={file}
+                onClick={e => onClick(e, img)}
+              >
+                <img
+                  src={file}
+                  alt={img.title || img.file}
+                  className="galleria__small"
+                />
+              </a>
+            );
+          })}
         </div>
       );
     });
@@ -218,7 +221,7 @@ export default function Galleria() {
       {lightImg && lightImg.file && (
         <div className="galleria__lightbox" >
           <img
-            src={require(`./img/photos/${lightImg.file}.jpg`).default}
+            src={require(`./img/photos/${lightImg.file}.jpg`)}
             alt={lightImg.file}
             className="galleria__lightbox__img"
           />

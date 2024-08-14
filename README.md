@@ -2,6 +2,12 @@
 
 A responsive Google Photos/Flickr-esque photo grid with progressive image loading, built with React.
 
+Dependencies:
+* Node.js v18.12.x
+* Webpack v5.x
+* React v18.x
+
+
 ![galleria screenshot](https://github.com/charliethomason/galleria/blob/master/screenshot.jpg?raw=true)
 
 Sources of inspiration:
